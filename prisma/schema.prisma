@@ -1,0 +1,48 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model user {
+  id             String           @id
+  name           String
+  email          String?          @unique
+  phoneNumber    String?
+  bio            String?
+  updatedAt      DateTime?        @default(now()) @db.Timestamptz(6)
+  createdAt      DateTime?        @default(now()) @db.Timestamptz(6)
+  userDepartment userDepartment[]
+}
+
+model department {
+  id             String           @id
+  name           String
+  userDepartment userDepartment[]
+}
+
+model userDepartment {
+  id           String     @id
+  userId       String
+  departmentId String
+  dateStarted  DateTime?  @db.Date
+  dateEnded    DateTime?  @db.Date
+  createdAt    DateTime   @default(now()) @db.Timestamptz(6)
+  updatedAt    DateTime   @default(now()) @db.Timestamptz(6)
+  department   department @relation(fields: [departmentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  user         user       @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model verificationOTP {
+  id        String   @id
+  userId    String
+  value     String
+  mode      String
+  type      String
+  createdAt DateTime @default(now()) @db.Timestamp(6)
+  data      Json?
+  expireAt  DateTime @db.Timestamp(6)
+}
