@@ -39,8 +39,8 @@ app.use((err, req, res, next) => {
   res.status(500).send(err);
 });
 
-app.use(middlewares.notFound);
-app.use(middlewares.errorHandler);
+// app.use(middlewares.notFound);
+// app.use(middlewares.errorHandler);
 
 
 module.exports = app;
