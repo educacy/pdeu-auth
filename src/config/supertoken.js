@@ -4,6 +4,9 @@ const Dashboard = require("supertokens-node/recipe/dashboard");
 const EmailVerification = require("supertokens-node/recipe/emailverification");
 
 
+const { sendSignInEmail } = require("../api/_email/sendEmail");
+
+
 module.exports = {
     supertokens: {
         // this is the location of the SuperTokens core.
@@ -29,8 +32,9 @@ module.exports = {
             flowType: "USER_INPUT_CODE_AND_MAGIC_LINK",
             emailDelivery:{
                 service:{
-                    sendEmail: async (email, link) => {
-                        console.log(email, link);
+                    sendEmail: async (supertokenData) => {
+                        const alpha = await sendSignInEmail(supertokenData.email, supertokenData.urlWithLinkCode)
+                        console.log(supertokenData, alpha);
                         return true;
                     }
                 }
